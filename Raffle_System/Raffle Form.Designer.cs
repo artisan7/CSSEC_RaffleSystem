@@ -1,4 +1,6 @@
-﻿namespace Raffle_System
+﻿using System.Windows.Forms;
+
+namespace Raffle_System
 {
     partial class RaffleAddu
     {
@@ -28,6 +30,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            float screenHeight = SystemInformation.VirtualScreen.Height;
+
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RaffleAddu));
             this.timeRandom = new System.Windows.Forms.Timer(this.components);
@@ -48,14 +52,13 @@
             // timeRandom
             // 
             this.timeRandom.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timeRandom.Interval = 100;
             // 
             // pbRandom
             // 
-            this.pbRandom.Location = new System.Drawing.Point(0, 0);
             this.pbRandom.Name = "pbRandom";
-            this.pbRandom.Size = new System.Drawing.Size(100, 23);
-            this.pbRandom.TabIndex = 0;
             this.pbRandom.Visible = false;
+            this.pbRandom.Maximum = 600;
             // 
             // pnlMain
             // 
@@ -129,7 +132,7 @@
             this.lblRandName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.pnlTop.SetColumnSpan(this.lblRandName, 3);
             this.lblRandName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRandName.Font = new System.Drawing.Font("Herald Typeface", 108F);
+            this.lblRandName.Font = new System.Drawing.Font("Herald Typeface", screenHeight * 0.1F);
             this.lblRandName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.lblRandName.Location = new System.Drawing.Point(3, 103);
             this.lblRandName.Name = "lblRandName";
@@ -143,7 +146,7 @@
             this.lblRandom.AutoSize = true;
             this.lblRandom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(200)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.lblRandom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblRandom.Font = new System.Drawing.Font("HoloLens MDL2 Assets", 62F);
+            this.lblRandom.Font = new System.Drawing.Font("HoloLens MDL2 Assets", screenHeight * 0.05F);
             this.lblRandom.ForeColor = System.Drawing.Color.White;
             this.lblRandom.Location = new System.Drawing.Point(316, 388);
             this.lblRandom.Name = "lblRandom";
@@ -156,7 +159,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Herald Typeface", 48F);
+            this.label1.Font = new System.Drawing.Font("Herald Typeface", screenHeight * 0.05F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(42)))), ((int)(((byte)(57)))));
             this.label1.Location = new System.Drawing.Point(316, 0);
             this.label1.Name = "label1";
@@ -176,7 +179,6 @@
             this.btnRaffleStart.Name = "btnRaffleStart";
             this.btnRaffleStart.Size = new System.Drawing.Size(244, 163);
             this.btnRaffleStart.TabIndex = 0;
-            this.btnRaffleStart.Text = "GO";
             this.btnRaffleStart.TextStartPoint = new System.Drawing.Point(60, 60);
             this.btnRaffleStart.UseVisualStyleBackColor = false;
             this.btnRaffleStart.Click += new System.EventHandler(this.btnRaffleStart_Click);

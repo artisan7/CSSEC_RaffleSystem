@@ -6,21 +6,31 @@ using System.Windows.Forms;
 
 namespace Raffle_System
 {
-    public partial class RaffleGuestForm : Form
+    public partial class RaffleGuest : Form
     {
         List<List<string>> data; //data on who's in event
         SoundPlayer player;
+        float ticks;
 
         MainForm mainform;
 
-        public RaffleGuestForm(DatabaseConnect conn, string tableName, MainForm mf)
+        public RaffleGuest(List<List<string>> d, string tableName, float td, MainForm mf)
         {
             InitializeComponent();
             mainform = mf;
-            data = conn.GuestAttendanceData(tableName);
+            data = d;
+            ticks = td * 10;
 
             lblRandomSchool.BackColor = Color.FromArgb(200, lblRandomSchool.BackColor);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+        }
+
+        private void RaffleGuest_Load(object sender, EventArgs e)
+        {
+            pnlMain.SuspendLayout();
+            pnlBottom.SuspendLayout();
+            pnlTop.SuspendLayout();
+            SuspendLayout();
         }
 
         private void btnRaffleStart_Click(object sender, EventArgs e)
@@ -32,16 +42,6 @@ namespace Raffle_System
             btnRaffleStart.Visible = false;
         }
 
-        private void btnRaffleStart_MouseEnter(object sender, EventArgs e)
-        {
-            btnRaffleStart.BackColor = Color.FromArgb(20, 80, 80);
-        }
-
-        private void btnRaffleStart_MouseLeave(object sender, EventArgs e)
-        {
-            btnRaffleStart.BackColor = Color.FromArgb(36, 116, 116);
-        }
-
         private void timeRandom_Tick(object sender, EventArgs e)
         {
             Random rand = new Random();
@@ -51,12 +51,15 @@ namespace Raffle_System
             lblRandomSchool.Text = data[index][3];
             pbRandomGuest.Increment(1);
 
-            if (pbRandomGuest.Value == 52)
+            if (pbRandomGuest.Value >= ticks)
             {
                 lblRandomGuest.Text = $"{data[index][2]}, {data[index][1]}";
                 player.Stop();
                 timeRandom.Stop();
+                data.RemoveAt(index);
                 btnRaffleStart.Visible = true;
+                if (data.Count < 1)
+                    btnRaffleStart.Enabled = false;
                 pbRandomGuest.Value = 0;
             }
         }

@@ -10,22 +10,24 @@ namespace Raffle_System
     {
         List<List<string>> data; //data on who's in event
         SoundPlayer player;// Music
+        float ticks;
 
         MainForm mainform;
 
-        public RaffleAddu(DatabaseConnect conn, string tableName, MainForm mf)
+        public RaffleAddu(List<List<string>> d, string tableName, float td, MainForm mf)
         {
             InitializeComponent();
             mainform = mf;
-            data = conn.AdduAttendanceData(tableName);
+            data = d;
+            ticks = td*10;
         }
 
         private void RaffleAddu_Load(object sender, EventArgs e)
         {
-            this.pnlMain.SuspendLayout();
-            this.pnlBottom.SuspendLayout();
-            this.pnlTop.SuspendLayout();
-            this.SuspendLayout();
+            pnlMain.SuspendLayout();
+            pnlBottom.SuspendLayout();
+            pnlTop.SuspendLayout();
+            SuspendLayout();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -39,11 +41,14 @@ namespace Raffle_System
             lblRandName.Text = $"{data[index][2]}, {data[index][1]}";
             pbRandom.Increment(1);
 
-            if (pbRandom.Value == 52)
+            if (pbRandom.Value >= ticks)
             {
                 player.Stop();
                 timeRandom.Stop();
+                data.RemoveAt(index);
                 btnRaffleStart.Visible = true;
+                if (data.Count < 1)
+                    btnRaffleStart.Enabled = false;
                 pbRandom.Value = 0;
             }
         }
@@ -55,7 +60,7 @@ namespace Raffle_System
             player.Play();
 
             timeRandom.Start();
-            btnRaffleStart.Visible = false; ;
+            btnRaffleStart.Visible = false;
         }
 
         private void btnBack_Click(object sender, EventArgs e)

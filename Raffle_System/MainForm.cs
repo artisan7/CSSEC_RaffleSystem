@@ -7,6 +7,8 @@ namespace Raffle_System
     public partial class MainForm : Form
     {
         int eventId;
+        List<List<string>> adduList = new List<List<string>>();
+        List<List<string>> guestList = new List<List<string>>();
 
         public MainForm()
         {
@@ -28,6 +30,13 @@ namespace Raffle_System
         {
             string eventChosen = cmbEvents.Text;
             lblEventName.Text = eventChosen;
+            if (eventChosen != "")
+            {
+                string tableName = eventData[eventId][5];
+                guestList = connect.GuestAttendanceData(tableName);
+                tableName = eventData[eventId][4];
+                adduList = connect.AdduAttendanceData(tableName);
+            }
 
             for (int i = 0; i < eventData.Count; i++)
             {
@@ -40,10 +49,11 @@ namespace Raffle_System
 
         private void btnEventRaffle_Click(object sender, EventArgs e)
         {
-            if(cmbEvents.Text != "")
+            if(cmbEvents.Text != "" && adduList.Count > 0)
             {
                 string tableName = eventData[eventId][4];
-                RaffleAddu rsInitialize = new RaffleAddu(connect, tableName, this);
+                float timerDuration = (float) npDuration.Value;
+                RaffleAddu rsInitialize = new RaffleAddu(adduList, tableName, timerDuration, this);
                 rsInitialize.Show();
                 this.Hide();
             }
@@ -56,10 +66,11 @@ namespace Raffle_System
 
         private void btnGuestRaffle_Click(object sender, EventArgs e)
         {
-            if (cmbEvents.Text != "")
+            if (cmbEvents.Text != "" && guestList.Count > 0)
             {
                 string tableName = eventData[eventId][5];
-                RaffleGuestForm rgfInitialize = new RaffleGuestForm(connect, tableName, this);
+                float timerDuration = (float)npDuration.Value;
+                RaffleGuest rgfInitialize = new RaffleGuest(guestList, tableName, timerDuration, this);
                 rgfInitialize.Show();
                 this.Hide();
             }
